@@ -4,13 +4,10 @@ namespace App\Filament\Resources\Subjects\RelationManagers;
 
 use App\Enums\PricingMode;
 use App\Models\SubjectTariff;
-use BackedEnum;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -20,33 +17,16 @@ class TariffsRelationManager extends RelationManager
 {
     protected static string $relationship = 'tariffs';
 
-    protected static ?string $title = 'تعريفة المادة (سجل الأسعار)';
-
-    /** قيمة نمط التسعير كنص، سواء وصلت كنص أو ككائن Enum. الافتراضي: سعر ثابت. */
-    private static function modeValue(mixed $state): string
-    {
-        $value = $state instanceof BackedEnum ? $state->value : $state;
-
-        return filled($value) ? (string) $value : PricingMode::Fixed->value;
-    }
+    protected static ?string $title = 'سعر المادة (سجل الأسعار)';
 
     /**
-     * حقل سعر واحد دائم الظهور (لا يعتمد على الإخفاء الشرطي)،
-     * ويُحوَّل عند الحفظ إلى fixed_price أو lecture_price بحسب النمط.
+     * طريقة تسعير واحدة: سعر المادة مباشرة.
+     * يُخزَّن في fixed_price مع pricing_mode = fixed (الأعمدة الأخرى في الجدول غير مستعملة).
      */
     private static function toModelData(array $data): array
     {
-        $price = $data['unit_price'] ?? null;
-        unset($data['unit_price']);
-
-        if (self::modeValue($data['pricing_mode'] ?? null) === PricingMode::PerLecture->value) {
-            $data['lecture_price'] = $price;
-            $data['fixed_price'] = null;
-        } else {
-            $data['fixed_price'] = $price;
-            $data['lecture_price'] = null;
-        }
-
+        $data['pricing_mode'] = PricingMode::Fixed->value;
+        $data['lecture_price'] = null;
         $data['created_by'] = auth()->id();
 
         return $data;
@@ -55,16 +35,8 @@ class TariffsRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('pricing_mode')
-                ->label('طريقة التسعير')
-                ->options(PricingMode::class)
-                ->default(PricingMode::Fixed->value)
-                ->required()
-                ->live(),
-            TextInput::make('unit_price')
-                ->label(fn (Get $get) => self::modeValue($get('pricing_mode')) === PricingMode::PerLecture->value
-                    ? 'سعر المحاضرة الواحدة'
-                    : 'سعر المادة')
+            TextInput::make('fixed_price')
+                ->label('سعر المادة')
                 ->numeric()
                 ->minValue(0)
                 ->step(0.01)
@@ -76,9 +48,10 @@ class TariffsRelationManager extends RelationManager
                 ->integer()
                 ->minValue(1)
                 ->maxValue(65535)
-                ->required(),
+                ->required()
+                ->helperText('للمعلومات فقط؛ لا يدخل في حساب السعر.'),
             DatePicker::make('effective_from')
-                ->label('تسري من تاريخ')
+                ->label('يسري من تاريخ')
                 ->default(today())
                 ->required()
                 ->unique(
@@ -87,8 +60,8 @@ class TariffsRelationManager extends RelationManager
                     modifyRuleUsing: fn (Unique $rule, RelationManager $livewire) => $rule
                         ->where('subject_id', $livewire->getOwnerRecord()->getKey()),
                 )
-                ->validationMessages(['unique' => 'توجد تعريفة بهذا التاريخ لهذه المادة.'])
-                ->helperText('لا تُعدَّل التعريفات القديمة؛ يُضاف سجل جديد بتاريخ سريان فتبقى أسعار الطلاب المسجّلين كما كانت.'),
+                ->validationMessages(['unique' => 'يوجد سعر بهذا التاريخ لهذه المادة.'])
+                ->helperText('لا تُعدَّل الأسعار القديمة؛ يُضاف سعر جديد بتاريخ سريان فتبقى أسعار الطلاب المسجّلين كما كانت.'),
         ]);
     }
 
@@ -100,30 +73,19 @@ class TariffsRelationManager extends RelationManager
             ->recordTitleAttribute('effective_from')
             ->columns([
                 TextColumn::make('effective_from')
-                    ->label('تسري من')
+                    ->label('يسري من')
                     ->date()
                     ->sortable(),
-                TextColumn::make('pricing_mode')
-                    ->label('طريقة التسعير')
-                    ->badge(),
-                TextColumn::make('fixed_price')
-                    ->label('السعر الثابت')
-                    ->suffix($currency)
-                    ->placeholder('-'),
-                TextColumn::make('lecture_price')
-                    ->label('سعر المحاضرة')
-                    ->suffix($currency)
-                    ->placeholder('-'),
-                TextColumn::make('lectures_count')
-                    ->label('عدد المحاضرات'),
                 TextColumn::make('total_price')
-                    ->label('الإجمالي')
+                    ->label('سعر المادة')
                     ->suffix($currency)
                     ->weight('bold'),
+                TextColumn::make('lectures_count')
+                    ->label('عدد المحاضرات'),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('إضافة تعريفة جديدة')
+                    ->label('إضافة سعر جديد')
                     ->mutateDataUsing(fn (array $data): array => self::toModelData($data)),
             ])
             ->defaultSort('effective_from', 'desc');

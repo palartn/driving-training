@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FinancialStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -45,6 +46,18 @@ class EnrollmentSubject extends Model
     public function exemption(): HasOne
     {
         return $this->hasOne(Exemption::class);
+    }
+
+    /**
+     * المواد غير المسددة بصيغة استعلام (للوحة التحكم والتقارير)، وتطابق منطق financialStatus():
+     * لا دفعة، ولا إعفاء كامل، وسعر المادة أكبر من صفر.
+     */
+    public function scopeUnpaid(Builder $query): Builder
+    {
+        return $query
+            ->where('price_amount', '>', 0)
+            ->whereDoesntHave('payment')
+            ->whereDoesntHave('exemption', fn (Builder $q) => $q->whereColumn('exemptions.exemption_amount', '>=', 'enrollment_subjects.price_amount'));
     }
 
     /** المستحق بعد الإعفاء، بالقروش/الأغورة لتفادي أخطاء الكسور. */

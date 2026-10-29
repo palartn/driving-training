@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuditLogger;
 use App\Services\Reports\ReportBuilder;
 use App\Services\Reports\ReportExporter;
 use Illuminate\Http\Request;
@@ -81,7 +82,17 @@ class ReportController extends Controller
 
     private function respond(Request $request, array $report)
     {
-        if ($request->query('format') === 'excel') {
+        $format = $request->query('format') === 'excel' ? 'excel' : 'html';
+
+        // الكشوف تحوي بيانات طلاب (أسماء وهواتف)، فيُسجَّل من أصدرها ومتى وبأي معايير.
+        AuditLogger::record('report.generated', $request->user(), null, [
+            'report' => $report['key'],
+            'format' => $format,
+            'filters' => $request->except(['format']),
+            'rows' => count($report['rows']),
+        ]);
+
+        if ($format === 'excel') {
             return $this->exporter->download($report);
         }
 

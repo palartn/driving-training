@@ -1,0 +1,81 @@
+﻿
+   FAIL  Tests\Feature\DatabaseConstraintsTest
+  ظ£ô full name is generated from the four parts                                                                         7.64s  
+  ظ£ô national id must be nine digits                                                                                    0.14s  
+  ظ£ô national id is unique                                                                                              0.14s  
+  ظ£ô course number is sequence slash year                                                                               0.18s  
+  ظ£ô database allows only one active enrollment per student                                                             0.12s  
+  ظذ» payment must reference exactly one target                                                                          0.11s  
+  ظ£ô tariff requires a price                                                                                            0.08s  
+  ظ£ô audit log cannot be updated or deleted                                                                             0.07s  
+
+   PASS  Tests\Feature\EnrollmentRulesTest
+  ظ£ô enrollment creates one financial unit per subject with price snapshot                                              0.48s  
+  ظ£ô later tariff change does not affect existing enrollment                                                            0.41s  
+  ظ£ô student cannot have two active enrollments                                                                         0.50s  
+  ظ£ô enrollment is rejected when a subject has no price                                                                 0.34s  
+  ظ£ô student and course must share a center                                                                             0.35s  
+  ظ£ô finished course rejects new enrollments                                                                            0.33s  
+  ظ£ô closing an enrollment frees the student for a new one                                                              0.39s  
+  ظ£ô employee cannot close an enrollment                                                                                0.36s  
+  ظ£ô employee of another center cannot enroll the student                                                               0.36s  
+
+   PASS  Tests\Feature\ExamRulesTest
+  ظ£ô student with two unpaid subjects is blocked from the exam                                                          0.42s  
+  ظ£ô one unpaid subject does not block the exam                                                                         0.42s  
+  ظ£ô an approved override allows a blocked student and only heads can grant it                                          0.43s  
+  ظ£ô practical exam requires an approved theory pass                                                                    0.51s  
+  ظ£ô retake needs a fee and the fee must be paid before the result                                                      0.51s  
+  ظ£ô new attempt is rejected while the previous one is not approved                                                     0.42s  
+  ظ£ô result cannot be entered before the exam date                                                                      0.43s  
+  ظ£ô employee cannot approve results                                                                                    0.42s  
+  ظ£ô enrollment completes after both exams are passed and approved                                                      0.48s  
+  ظ£ô override applies to retake attempts too                                                                            0.42s  
+
+   PASS  Tests\Feature\ExampleTest
+  ظ£ô the application returns a successful response                                                                      0.18s  
+
+   PASS  Tests\Feature\PaymentRulesTest
+  ظ£ô payment must equal the due amount exactly                                                                          0.42s  
+  ظ£ô only one payment per subject                                                                                       0.37s  
+  ظ£ô receipt number is unique across payments                                                                           0.41s  
+  ظ£ô partial exemption then payment of the remainder                                                                    0.42s  
+  ظ£ô full exemption makes the subject exempt and rejects payment                                                        0.37s  
+  ظ£ô exemption is rejected after a payment                                                                              0.37s  
+  ظ£ô exemption cannot exceed the price                                                                                  0.36s  
+  ظ£ô employee cannot grant an exemption                                                                                 0.34s  
+
+   PASS  Tests\Feature\ReportAuditTest
+  ظ£ô generating a report is logged with who what and filters                                                            0.41s  
+  ظ£ô excel export is logged with its format                                                                             0.44s  
+
+   PASS  Tests\Feature\ReportsTest
+  ظ£ô enrollment roster lists students with their unpaid subject count                                                   0.63s  
+  ظ£ô payments report totals subject payments and retake fees                                                            1.21s  
+  ظ£ô unpaid report totals the due amount after exemption                                                                1.00s  
+  ظ£ô a center bound user cannot report on another centers course                                                        0.78s  
+  ظ£ô guests are redirected to login                                                                                     0.86s  
+  ظ£ô print page shows the ministry letterhead                                                                           0.92s  
+  ظ£ô excel export returns an xlsx file                                                                                  1.18s  
+  ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤  
+   FAILED  Tests\Feature\DatabaseConstraintsTest > payment must reference exactly one target               RoleDoesNotExist   
+  There is no role named `general_manager` for guard `web`.
+
+  at vendor\spatie\laravel-permission\src\Exceptions\RoleDoesNotExist.php:11
+      7ظûـ class RoleDoesNotExist extends InvalidArgumentException
+      8ظûـ {
+      9ظûـ     public static function named(string $roleName, ?string $guardName)
+     10ظûـ     {
+  ظئ£  11ظûـ         return new static(__('There is no role named `:role` for guard `:guard`.', [
+     12ظûـ             'role' => $roleName,
+     13ظûـ             'guard' => $guardName,
+     14ظûـ         ]));
+     15ظûـ     }
+
+  1   vendor\spatie\laravel-permission\src\Exceptions\RoleDoesNotExist.php:11
+  2   vendor\spatie\laravel-permission\src\Models\Role.php:113
+
+
+  Tests:    1 failed, 44 passed (83 assertions)
+  Duration: 27.51s
+

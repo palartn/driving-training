@@ -11,7 +11,7 @@ use App\Models\Payment;
 
 class AuditLabel
 {
-    /** أحداث الخدمات (تسجيل، دفع، إعفاء، اختبارات، تقارير). */
+    /** أحداث الخدمات (تسجيل، دفع، إعفاء، اختبارات). */
     private const EVENTS = [
         'enrollment.created' => 'تسجيل طالب في دورة',
         'enrollment.closed' => 'إغلاق تسجيل (انسحاب/إلغاء)',
@@ -23,7 +23,6 @@ class AuditLabel
         'exam_attempt.result_entered' => 'إدخال نتيجة',
         'exam_attempt.result_approved' => 'اعتماد نتيجة',
         'exam_override.created' => 'استثناء من منع الاختبار',
-        'report.generated' => 'إصدار تقرير',
     ];
 
     /** النماذج المسجَّلة تلقائيًا عبر AuditObserver. */

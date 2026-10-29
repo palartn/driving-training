@@ -18,6 +18,15 @@ class DatabaseConstraintsTest extends TestCase
     use RefreshDatabase;
     use TrainingFixtures;
 
+
+        protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seedRoles();
+    }
+
+    
+
     public function test_full_name_is_generated_from_the_four_parts(): void
     {
         $student = $this->makeStudent($this->makeCenter());

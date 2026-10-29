@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Reports;
 use App\Filament\Widgets\ActiveCourses;
 use App\Filament\Widgets\BlockedEnrollments;
 use App\Filament\Widgets\DashboardStats;
@@ -37,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Dashboard::class,
+                Reports::class,
             ])
             ->widgets([
                 DashboardStats::class,

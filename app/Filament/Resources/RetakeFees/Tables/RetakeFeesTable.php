@@ -26,5 +26,6 @@ class RetakeFeesTable
                     ->sortable(),
             ])
             ->defaultSort('effective_from', 'desc');
+            
     }
 }

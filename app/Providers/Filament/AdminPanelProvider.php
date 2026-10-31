@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Backups;
 use App\Filament\Pages\Reports;
 use App\Filament\Widgets\ActiveCourses;
 use App\Filament\Widgets\BlockedEnrollments;
@@ -39,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
                 Reports::class,
+                Backups::class,
             ])
             ->widgets([
                 DashboardStats::class,

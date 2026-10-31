@@ -22,6 +22,7 @@ class PermissionLabel
         'roles' => 'الأدوار',
         'audit_logs' => 'سجل التدقيق',
         'reports' => 'التقارير',
+        'backups' => 'النسخ الاحتياطي',
     ];
 
     private const ACTIONS = [
@@ -29,6 +30,7 @@ class PermissionLabel
         'create' => 'إضافة',
         'update' => 'تعديل',
         'delete' => 'حذف',
+        'download' => 'تنزيل',
     ];
 
     private const SPECIAL = [

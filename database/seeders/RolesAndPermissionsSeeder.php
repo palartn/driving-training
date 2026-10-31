@@ -10,6 +10,7 @@ use Spatie\Permission\PermissionRegistrar;
 /**
  * أدوار وصلاحيات افتراضية مقترحة (غير معتمدة نهائيًا).
  * تُعدَّل لاحقًا من شاشة الأدوار. الاسم: <المورد>.<العملية>
+ * تنبيه: تشغيله على قاعدة قائمة يعيد مزامنة صلاحيات كل الأدوار الأربعة إلى الافتراضي.
  */
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -35,6 +36,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'roles' => ['view', 'create', 'update'],
             'audit_logs' => ['view'],
             'reports' => ['view'],
+            'backups' => ['view', 'create', 'download'],
         ];
 
         $all = [];
@@ -55,12 +57,13 @@ class RolesAndPermissionsSeeder extends Seeder
         // المدير العام: كل الصلاحيات.
         $generalManager = $all;
 
-        // المدير: كل شيء عدا إدارة المستخدمين والأدوار والمراكز، وتحديد التعريفة والرسوم وأنواع الدورات.
+        // المدير: كل شيء عدا إدارة المستخدمين والأدوار والمراكز والنسخ الاحتياطي، وتحديد التعريفة والرسوم وأنواع الدورات.
         $managerExcluded = ['retake_fees.create', 'subject_tariffs.create', 'course_types.create', 'course_types.update'];
         $manager = array_values(array_filter($all, function (string $p) use ($managerExcluded) {
             return ! str_starts_with($p, 'users.')
                 && ! str_starts_with($p, 'roles.')
                 && ! str_starts_with($p, 'centers.')
+                && ! str_starts_with($p, 'backups.')
                 && ! in_array($p, $managerExcluded, true);
         }));
 

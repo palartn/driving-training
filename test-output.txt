@@ -79,3 +79,7 @@
   Tests:    1 failed, 44 passed (83 assertions)
   Duration: 27.51s
 
+  
+-- php artisan migrate
+-- php artisan db:seed
+-- php artisan app:create-admin

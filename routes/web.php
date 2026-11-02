@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackupDownloadController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,8 @@ Route::middleware('auth')->prefix('reports')->name('reports.')->group(function (
     Route::get('payments', [ReportController::class, 'payments'])->name('payments');
     Route::get('unpaid-subjects', [ReportController::class, 'unpaidSubjects'])->name('unpaid-subjects');
 });
+
+Route::middleware('auth')
+    ->get('backups/{file}', BackupDownloadController::class)
+    ->where('file', '[A-Za-z0-9_.\-]+\.sql\.gz')
+    ->name('backups.download');

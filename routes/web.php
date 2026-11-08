@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\BackupDownloadController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,8 @@ Route::middleware('auth')->prefix('reports')->name('reports.')->group(function (
     Route::get('exam-results', [ReportController::class, 'examResults'])->name('exam-results');
     Route::get('payments', [ReportController::class, 'payments'])->name('payments');
     Route::get('unpaid-subjects', [ReportController::class, 'unpaidSubjects'])->name('unpaid-subjects');
+    Route::get('session-attendance', [AttendanceReportController::class, 'session'])->name('session-attendance');
+    Route::get('course-attendance', [AttendanceReportController::class, 'course'])->name('course-attendance');
 });
 
 Route::middleware('auth')

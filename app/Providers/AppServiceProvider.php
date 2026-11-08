@@ -6,10 +6,12 @@ use App\Models\Center;
 use App\Models\Course;
 use App\Models\CourseType;
 use App\Models\Exam;
+use App\Models\Instructor;
 use App\Models\RetakeFee;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\SubjectTariff;
+use App\Models\TrainingSession;
 use App\Models\User;
 use App\Observers\AuditObserver;
 use App\Policies\RolePolicy;
@@ -39,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
             Center::class,
             RetakeFee::class,
             Exam::class,
+            Instructor::class,
+            TrainingSession::class,
             User::class,
         ] as $model) {
             $model::observe(AuditObserver::class);

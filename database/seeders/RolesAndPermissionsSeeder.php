@@ -31,6 +31,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'exam_attempts' => ['view', 'create', 'update'],
             'retake_fees' => ['view', 'create'],
             'exam_overrides' => ['view', 'create'],
+            'instructors' => ['view', 'create', 'update'],
+            'training_sessions' => ['view', 'create', 'update'],
+            'attendance' => ['view', 'create', 'update'],
             'centers' => ['view', 'create', 'update'],
             'users' => ['view', 'create', 'update'],
             'roles' => ['view', 'create', 'update'],
@@ -67,7 +70,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 && ! in_array($p, $managerExcluded, true);
         }));
 
-        // رئيس القسم: التشغيل الكامل مع الإعفاء والاستثناء واعتماد النتائج وإغلاق التسجيل.
+        // رئيس القسم: التشغيل الكامل مع الإعفاء والاستثناء واعتماد النتائج وإغلاق التسجيل وإدارة المدربين والجلسات.
         $departmentHead = [
             'students.view', 'students.create', 'students.update',
             'courses.view', 'courses.create', 'courses.update',
@@ -79,10 +82,13 @@ class RolesAndPermissionsSeeder extends Seeder
             'exam_attempts.view', 'exam_attempts.create', 'exam_attempts.update', 'results.approve',
             'retake_fees.view',
             'exam_overrides.view', 'exam_overrides.create',
+            'instructors.view', 'instructors.create', 'instructors.update',
+            'training_sessions.view', 'training_sessions.create', 'training_sessions.update',
+            'attendance.view', 'attendance.create', 'attendance.update',
             'audit_logs.view', 'reports.view',
         ];
 
-        // الموظف: الإدخال اليومي بلا إعفاء ولا استثناء ولا اعتماد.
+        // الموظف: الإدخال اليومي بلا إعفاء ولا استثناء ولا اعتماد؛ يسجّل الحضور ولا يدير المدربين والجلسات.
         $employee = [
             'students.view', 'students.create', 'students.update',
             'courses.view', 'subjects.view', 'course_types.view', 'subject_tariffs.view',
@@ -91,6 +97,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'exams.view',
             'exam_attempts.view', 'exam_attempts.create', 'exam_attempts.update',
             'retake_fees.view',
+            'instructors.view', 'training_sessions.view',
+            'attendance.view', 'attendance.create', 'attendance.update',
             'reports.view',
         ];
 

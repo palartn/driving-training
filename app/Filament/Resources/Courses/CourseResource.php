@@ -6,6 +6,7 @@ use App\Filament\Concerns\ScopesToUserCenter;
 use App\Filament\Resources\Courses\Pages\CreateCourse;
 use App\Filament\Resources\Courses\Pages\EditCourse;
 use App\Filament\Resources\Courses\Pages\ListCourses;
+use App\Filament\Resources\Courses\RelationManagers\InstructorAssignmentsRelationManager;
 use App\Filament\Resources\Courses\Schemas\CourseForm;
 use App\Filament\Resources\Courses\Tables\CoursesTable;
 use App\Models\Course;
@@ -50,7 +51,9 @@ class CourseResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            InstructorAssignmentsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

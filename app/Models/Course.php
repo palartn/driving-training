@@ -56,4 +56,14 @@ class Course extends Model
     {
         return $this->hasMany(Exam::class);
     }
+
+    public function instructorAssignments(): HasMany
+    {
+        return $this->hasMany(CourseSubjectInstructor::class);
+    }
+
+    public function trainingSessions(): HasMany
+    {
+        return $this->hasMany(TrainingSession::class);
+    }
 }

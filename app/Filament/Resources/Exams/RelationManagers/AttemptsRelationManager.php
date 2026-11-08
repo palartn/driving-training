@@ -132,7 +132,7 @@ class AttemptsRelationManager extends RelationManager
                     }),
 
                 Action::make('grantOverride')
-                    ->label('اعتماد استثناء (غير مسدد)')
+                    ->label('اعتماد استثناء (غير مسدد / حضور)')
                     ->icon(Heroicon::OutlinedShieldExclamation)
                     ->color('warning')
                     ->visible(fn () => auth()->user()->can('exam_overrides.create'))
@@ -144,7 +144,7 @@ class AttemptsRelationManager extends RelationManager
                             ->maxLength(255),
                     ])
                     ->requiresConfirmation()
-                    ->modalDescription('سيُسجَّل اسمك كمعتمِد للاستثناء، ويسمح للطالب بدخول هذا الاختبار رغم المواد غير المسددة.')
+                    ->modalDescription('سيُسجَّل اسمك كمعتمِد للاستثناء، ويسمح للطالب بدخول هذا الاختبار رغم المواد غير المسددة أو نسبة الحضور المنخفضة.')
                     ->action(function (array $data): void {
                         try {
                             app(ExamAttemptService::class)->grantOverride(

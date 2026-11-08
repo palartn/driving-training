@@ -95,6 +95,40 @@
                 <button type="submit" name="format" value="excel">تصدير Excel</button>
             </div>
         </form>
+
+        {{-- 5. كشف حضور جلسة --}}
+        <form class="rpt-card" method="get" action="{{ route('reports.session-attendance') }}" target="_blank">
+            <h3>كشف حضور جلسة</h3>
+            <p>قائمة الطلاب بحالة الحضور وعمود للتوقيع، للطباعة وملئه بخط اليد.</p>
+            <label>الجلسة</label>
+            <select name="session_id" required>
+                <option value="">اختر الجلسة</option>
+                @foreach ($this->sessionOptions() as $id => $label)
+                    <option value="{{ $id }}">{{ $label }}</option>
+                @endforeach
+            </select>
+            <div class="rpt-actions">
+                <button type="submit" name="format" value="html" class="primary">عرض للطباعة / PDF</button>
+                <button type="submit" name="format" value="excel">تصدير Excel</button>
+            </div>
+        </form>
+
+        {{-- 6. ملخص حضور دورة --}}
+        <form class="rpt-card" method="get" action="{{ route('reports.course-attendance') }}" target="_blank">
+            <h3>ملخص حضور دورة</h3>
+            <p>لكل طالب: الجلسات المنعقدة، والحاضر والغائب، ونسبة الحضور، وساعات التدريب (ومنها العملي).</p>
+            <label>الدورة</label>
+            <select name="course_id" required>
+                <option value="">اختر الدورة</option>
+                @foreach ($this->courseOptions() as $id => $label)
+                    <option value="{{ $id }}">{{ $label }}</option>
+                @endforeach
+            </select>
+            <div class="rpt-actions">
+                <button type="submit" name="format" value="html" class="primary">عرض للطباعة / PDF</button>
+                <button type="submit" name="format" value="excel">تصدير Excel</button>
+            </div>
+        </form>
     </div>
 
     <p class="rpt-note">لحفظ التقرير بصيغة PDF: افتح «عرض للطباعة»، ثم اضغط «طباعة / حفظ بصيغة PDF» واختر الطابعة «Save as PDF» (أو «Microsoft Print to PDF»).</p>

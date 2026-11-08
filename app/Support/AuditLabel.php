@@ -11,7 +11,7 @@ use App\Models\Payment;
 
 class AuditLabel
 {
-    /** أحداث الخدمات (تسجيل، دفع، إعفاء، اختبارات، تقارير، نسخ احتياطي). */
+    /** أحداث الخدمات (تسجيل، دفع، إعفاء، اختبارات، حضور، تقارير، نسخ احتياطي). */
     private const EVENTS = [
         'enrollment.created' => 'تسجيل طالب في دورة',
         'enrollment.closed' => 'إغلاق تسجيل (انسحاب/إلغاء)',
@@ -23,6 +23,7 @@ class AuditLabel
         'exam_attempt.result_entered' => 'إدخال نتيجة',
         'exam_attempt.result_approved' => 'اعتماد نتيجة',
         'exam_override.created' => 'استثناء من منع الاختبار',
+        'attendance.recorded' => 'تسجيل حضور جلسة',
         'report.generated' => 'إصدار تقرير',
         'backup.created' => 'إنشاء نسخة احتياطية',
         'backup.downloaded' => 'تنزيل نسخة احتياطية',
@@ -38,6 +39,8 @@ class AuditLabel
         'center' => 'مركز',
         'retake_fee' => 'رسوم إعادة',
         'exam' => 'اختبار',
+        'instructor' => 'مدرب',
+        'training_session' => 'جلسة تدريب',
         'user' => 'مستخدم',
     ];
 
@@ -55,6 +58,8 @@ class AuditLabel
         'App\Models\Center' => 'مركز',
         'App\Models\RetakeFee' => 'رسوم إعادة',
         'App\Models\Exam' => 'اختبار',
+        'App\Models\Instructor' => 'مدرب',
+        'App\Models\TrainingSession' => 'جلسة تدريب',
         'App\Models\User' => 'مستخدم',
         Enrollment::class => 'تسجيل',
         Payment::class => 'دفعة',

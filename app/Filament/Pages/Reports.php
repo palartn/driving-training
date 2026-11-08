@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Center;
 use App\Models\Course;
 use App\Models\Exam;
+use App\Models\TrainingSession;
 use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -53,6 +54,18 @@ class Reports extends Page
             ->limit(300)
             ->get()
             ->mapWithKeys(fn (Exam $e) => [$e->id => $e->exam_date->format('Y-m-d').' — '.$e->type->label().' — '.$e->course->course_number])
+            ->all();
+    }
+
+    public function sessionOptions(): array
+    {
+        return TrainingSession::query()
+            ->with(['course', 'subject'])
+            ->when(auth()->user()?->center_id, fn (Builder $q, $center) => $q->whereHas('course', fn (Builder $c) => $c->where('center_id', $center)))
+            ->orderByDesc('session_date')
+            ->limit(300)
+            ->get()
+            ->mapWithKeys(fn (TrainingSession $s) => [$s->id => $s->session_date->format('Y-m-d').' — '.$s->course->course_number.' — '.$s->subject->name])
             ->all();
     }
 
